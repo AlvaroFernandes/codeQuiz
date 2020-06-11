@@ -22,8 +22,6 @@ function showQuestion(newQuestion, oldQuestion) {
         indexQuestion = 0;
         console.log(indexQuestion);
     } else if (newQuestion === "Y") {
-        console.log("teste 1")
-        console.log(oldQuestion);
         $question.empty();
         $answerList.empty();
         let oldIndex = $.inArray(oldQuestion, quizQuestions);
@@ -32,6 +30,12 @@ function showQuestion(newQuestion, oldQuestion) {
         indexQuestion = oldIndex;
     }
 
+    console.log(quizQuestions.length);
+
+    if (newQuestion === "Y" && indexQuestion > quizQuestions.length - 1) {
+        console.log("end game!");
+        return;
+    }
 
     let quizQuestion = quizQuestions[indexQuestion];
 
@@ -41,8 +45,9 @@ function showQuestion(newQuestion, oldQuestion) {
 
     $.each(quizQuestion.answers, function(index, element) {
 
-        const $answerButtons = $("<button class='btn'>");
+        const $answerButtons = $("<button class='btn btn-anwser'>");
         $answerButtons.attr("id", index);
+        $answerButtons.attr("data-letter", index);
         $answerButtons.text(index + ": " + element);
 
 
@@ -50,17 +55,10 @@ function showQuestion(newQuestion, oldQuestion) {
         $answerList.append($answerButtons);
     })
 
-    $("#A").on("click", function() {
-        checkResult("A", quizQuestion);
-    });
-    $("#B").on("click", function() {
-        checkResult("B", quizQuestion);
-    });
-    $("#C").on("click", function() {
-        checkResult("C", quizQuestion);
-    });
-    $("#D").on("click", function() {
-        checkResult("D", quizQuestion);
+    $(".btn-anwser").on("click", function() {
+        let userAnwser = ($(this).attr("data-letter"));
+        console.log(userAnwser);
+        checkResult(userAnwser, quizQuestion);
     });
 
 }
