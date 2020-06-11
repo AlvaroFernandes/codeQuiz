@@ -1,6 +1,5 @@
 // variables
 const $startBtn = $("#start-btn");
-const $nextBtn = $("#next-btn");
 const $startText = $("#start-text");
 const $contQuestion = $("#question-container");
 const $question = $("#question");
@@ -8,6 +7,7 @@ const $answerList = $("#answer-buttons");
 
 $startBtn.on("click", startGame);
 
+//funtion that will hide the initial screen and call the function that willl format the first question;
 function startGame() {
     $startText.addClass("hide");
     $contQuestion.removeClass("hide");
@@ -15,14 +15,40 @@ function startGame() {
 }
 
 function showQuestion() {
+
     const randomQuestion = quizQuestions[Math.floor(Math.random() * quizQuestions.length)];
 
     $question.append(randomQuestion.question);
-    randomQuestion.answers.forEach(element => {
+    console.log(randomQuestion.answers);
 
 
-    });
+
+    $.each(randomQuestion.answers, function(index, element) {
+
+        console.log(index, element);
+        const $answerButtons = $("<button class='btn'>");
+        $answerButtons.attr("id", index);
+        $answerButtons.text(index + ": " + element);
+
+        console.log($answerButtons);
+
+
+        $answerList.append($answerButtons);
+    })
+
+
 }
+
+//$("#A").on("click", checkResult("A", randomQuestion));
+
+function checkResult(userResponse, question) {
+    if (question.correctAnswer === userResponse) {
+        console.log("OK");
+    } else {
+        console.log("NO");
+    }
+}
+
 
 
 //questions for the quiz

@@ -28,9 +28,18 @@
 }
 
 .btn {
+    background-color: purple;
+    color: white;
+    margin: 10px 20px;
     border-radius: 5px;
-    padding: 5px 10px;
+    padding: 10px 15px;
     outline: none;
+}
+
+.btn:hover {
+    color: black;
+    background-color: white;
+    border: 1px solid purple;
 }
 
 .start-btn {
@@ -45,11 +54,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-.highScore {
-    border: 0;
-    background-color: transparent;
 }
 
 .hide {
