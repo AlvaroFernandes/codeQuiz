@@ -14,16 +14,28 @@ function startGame() {
     showQuestion();
 }
 
-function showQuestion() {
+function showQuestion(newQuestion) {
 
-    const randomQuestion = quizQuestions[Math.floor(Math.random() * quizQuestions.length)];
-
-    $question.append(randomQuestion.question);
-    console.log(randomQuestion.answers);
+    let indexQuestion = 0;
 
 
+    console.log(newQuestion);
+    if (newQuestion === "Y") {
+        indexQuestion++;
+        console.log(indexQuestion);
+        let quizQuestion = " ";
+        $question.empty();
+        $answerList.empty();
+    }
 
-    $.each(randomQuestion.answers, function(index, element) {
+    let quizQuestion = quizQuestions[indexQuestion];
+
+    $question.append(quizQuestion.question);
+    console.log(quizQuestion.answers);
+
+
+
+    $.each(quizQuestion.answers, function(index, element) {
 
         console.log(index, element);
         const $answerButtons = $("<button class='btn'>");
@@ -36,16 +48,37 @@ function showQuestion() {
         $answerList.append($answerButtons);
     })
 
+    $("#A").on("click", function() {
+        checkResult("A", quizQuestion);
+    });
+    $("#B").on("click", function() {
+        checkResult("B", quizQuestion);
+    });
+    $("#C").on("click", function() {
+        checkResult("C", quizQuestion);
+    });
+    $("#D").on("click", function() {
+        checkResult("D", quizQuestion);
+    });
 
 }
 
-//$("#A").on("click", checkResult("A", randomQuestion));
+
 
 function checkResult(userResponse, question) {
+    console.log(userResponse);
+    console.log(question);
+
     if (question.correctAnswer === userResponse) {
+
         console.log("OK");
+        $("#" + userResponse).addClass("right");
+        setTimeout(function() { showQuestion("Y"); }, 3000);
     } else {
         console.log("NO");
+        $("#" + userResponse).addClass("wrong");
+        setTimeout(function() { showQuestion("Y"); }, 3000);
+
     }
 }
 

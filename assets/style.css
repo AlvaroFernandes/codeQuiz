@@ -56,6 +56,22 @@
     align-items: center;
 }
 
+.right {
+    background-color: green;
+}
+
+.right:hover {
+    background-color: green;
+}
+
+.wrong {
+    background-color: red;
+}
+
+.wrong:hover {
+    background-color: red;
+}
+
 .hide {
     display: none;
 }
