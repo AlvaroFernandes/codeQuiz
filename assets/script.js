@@ -11,38 +11,40 @@ $startBtn.on("click", startGame);
 function startGame() {
     $startText.addClass("hide");
     $contQuestion.removeClass("hide");
-    showQuestion();
+    showQuestion(0, "n");
 }
 
-function showQuestion(newQuestion) {
+function showQuestion(newQuestion, oldQuestion) {
 
-    let indexQuestion = 0;
+    let indexQuestion = '';
 
-
-    console.log(newQuestion);
-    if (newQuestion === "Y") {
-        indexQuestion++;
+    if (newQuestion === 0) {
+        indexQuestion = 0;
         console.log(indexQuestion);
-        let quizQuestion = " ";
+    } else if (newQuestion === "Y") {
+        console.log("teste 1")
+        console.log(oldQuestion);
         $question.empty();
         $answerList.empty();
+        let oldIndex = $.inArray(oldQuestion, quizQuestions);
+        oldIndex++;
+        console.log(oldIndex);
+        indexQuestion = oldIndex;
     }
+
 
     let quizQuestion = quizQuestions[indexQuestion];
 
     $question.append(quizQuestion.question);
-    console.log(quizQuestion.answers);
 
 
 
     $.each(quizQuestion.answers, function(index, element) {
 
-        console.log(index, element);
         const $answerButtons = $("<button class='btn'>");
         $answerButtons.attr("id", index);
         $answerButtons.text(index + ": " + element);
 
-        console.log($answerButtons);
 
 
         $answerList.append($answerButtons);
@@ -66,18 +68,14 @@ function showQuestion(newQuestion) {
 
 
 function checkResult(userResponse, question) {
-    console.log(userResponse);
-    console.log(question);
 
     if (question.correctAnswer === userResponse) {
 
-        console.log("OK");
         $("#" + userResponse).addClass("right");
-        setTimeout(function() { showQuestion("Y"); }, 3000);
+        setTimeout(function() { showQuestion("Y", question); }, 3000);
     } else {
-        console.log("NO");
         $("#" + userResponse).addClass("wrong");
-        setTimeout(function() { showQuestion("Y"); }, 3000);
+        setTimeout(function() { showQuestion("Y", question); }, 3000);
 
     }
 }
