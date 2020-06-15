@@ -1,30 +1,42 @@
 // variables
+const $controls = $(".controls");
 const $startBtn = $("#start-btn");
-const $startText = $("#start-text");
-const $contQuestion = $("#question-container");
-const $contAnswer = $("#answer-container");
-const $contRight = $("#right-container");
-const $contWrong = $("#wrong-container");
+const $questionWrapper = $(".questions-wrapper");
+const $contQuestion = $(".question-container");
+const $contAnswer = $(".answer-container");
+const $contRight = $(".right-container");
+const $contWrong = $(".wrong-container");
 const $question = $("#question");
 const $answerList = $("#answer-buttons");
 const $timer = $(".timer");
 let finalScore = "";
 const $submitScore = $("#submitScore");
 const $userInitials = $("#userInitials");
+const $showScore = $("#showHighScore");
+const $listScore = $(".list-highscores");
+const $startOver = $("#start-again");
+const $clearScore = $("#clear-highscore");
 
 $startBtn.on("click", startGame);
 
+$submitScore.on("click", saveScore);
+
+$showScore.on("click", showHighScore);
+
+$clearScore.on("click", clearScore);
+
+$startOver.on("click", startOver);
+
 let highScores = [];
 
-let timer = 150;
+let timer = 100;
 // $timer.text(timer);
 
 
 //funtion that will hide the initial screen and call the function that willl format the first question;
 function startGame() {
-    $startText.addClass("hide");
-    $contQuestion.removeClass("hide");
-    $contAnswer.removeClass("hide");
+    $controls.addClass("hide");
+    $questionWrapper.removeClass("hide");
     showQuestion(0, "n");
     points();
 }
@@ -53,7 +65,7 @@ function showQuestion(newQuestion, oldQuestion) {
         finalScore = timer;
         console.log(finalScore);
         $(".top").addClass("hide");
-        $(".scores").removeClass("hide");
+        $(".final-scores").removeClass("hide");
         $(".finalScore").text(finalScore);
 
 
@@ -97,13 +109,14 @@ function checkResult(userResponse, question) {
         setTimeout(function() {
             showQuestion("Y", question);
             $contRight.addClass("hide");
-        }, 1000);
+        }, 500);
     } else {
         $contWrong.removeClass("hide");
         setTimeout(function() {
             showQuestion("Y", question);
             $contWrong.addClass("hide");
-        }, 1000);
+
+        }, 500);
 
     }
 }
@@ -120,12 +133,59 @@ let points = function() {
     }, 1000);
 }
 
-$submitScore.on("click", saveScore($userInitials, finalScore));
 
-function saveScore(user, score) {
-    console.log(user, score)
+
+function saveScore() {
+    let iniUser = $userInitials.val();
+    highScores.push({ "user": iniUser, "score": finalScore });
+
+    localStorage.setItem("highScores", JSON.stringify(highScores));
+    showHighScore;
+
+    location.reload();
 }
 
+function showHighScore() {
+    $listScore.removeClass("hide");
+    if (!$controls.hasClass("hide")) {
+        $controls.addClass("hide");
+    }
+    if (!$(".top").hasClass("hide")) {
+        $(".top").addClass("hide");
+    }
+
+    let listHighScore = JSON.parse(localStorage.getItem("highScores"));
+
+    console.log(listHighScore);
+
+
+
+    Object.keys(listHighScore).forEach(function(value, prop) {
+
+        console.log(value, listHighScore[value].user);
+        let userIni = listHighScore[value].user;
+        let userScore = listHighScore[value].score;
+
+        console.log(userIni, userScore);
+        const listItem = $('<li>');
+        listItem.addClass("listItem");
+        listItem.text("Initials: " + userIni + " Points: " + userScore);
+        console.log(userIni, userScore);
+        console.log(listItem);
+        $(".scoreList").append(listItem);
+    })
+
+}
+
+function clearScore() {
+    window.localStorage.clear();
+    location.reload();
+
+}
+
+function startOver() {
+    location.reload();
+}
 
 
 
