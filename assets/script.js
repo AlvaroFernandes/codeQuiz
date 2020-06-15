@@ -2,16 +2,31 @@
 const $startBtn = $("#start-btn");
 const $startText = $("#start-text");
 const $contQuestion = $("#question-container");
+const $contAnswer = $("#answer-container");
+const $contRight = $("#right-container");
+const $contWrong = $("#wrong-container");
 const $question = $("#question");
 const $answerList = $("#answer-buttons");
+const $timer = $(".timer");
+let finalScore = "";
+const $submitScore = $("#submitScore");
+const $userInitials = $("#userInitials");
 
 $startBtn.on("click", startGame);
+
+let highScores = [];
+
+let timer = 150;
+// $timer.text(timer);
+
 
 //funtion that will hide the initial screen and call the function that willl format the first question;
 function startGame() {
     $startText.addClass("hide");
     $contQuestion.removeClass("hide");
+    $contAnswer.removeClass("hide");
     showQuestion(0, "n");
+    points();
 }
 
 function showQuestion(newQuestion, oldQuestion) {
@@ -34,6 +49,14 @@ function showQuestion(newQuestion, oldQuestion) {
 
     if (newQuestion === "Y" && indexQuestion > quizQuestions.length - 1) {
         console.log("end game!");
+        points(stop);
+        finalScore = timer;
+        console.log(finalScore);
+        $(".top").addClass("hide");
+        $(".scores").removeClass("hide");
+        $(".finalScore").text(finalScore);
+
+
         return;
     }
 
@@ -45,6 +68,8 @@ function showQuestion(newQuestion, oldQuestion) {
 
     $.each(quizQuestion.answers, function(index, element) {
 
+        const wrapper = $("<div class='row'>")
+
         const $answerButtons = $("<button class='btn btn-anwser'>");
         $answerButtons.attr("id", index);
         $answerButtons.attr("data-letter", index);
@@ -52,7 +77,7 @@ function showQuestion(newQuestion, oldQuestion) {
 
 
 
-        $answerList.append($answerButtons);
+        $answerList.append(wrapper.append($answerButtons));
     })
 
     $(".btn-anwser").on("click", function() {
@@ -68,15 +93,39 @@ function showQuestion(newQuestion, oldQuestion) {
 function checkResult(userResponse, question) {
 
     if (question.correctAnswer === userResponse) {
-
-        $("#" + userResponse).addClass("right");
-        setTimeout(function() { showQuestion("Y", question); }, 3000);
+        $contRight.removeClass("hide");
+        setTimeout(function() {
+            showQuestion("Y", question);
+            $contRight.addClass("hide");
+        }, 1000);
     } else {
-        $("#" + userResponse).addClass("wrong");
-        setTimeout(function() { showQuestion("Y", question); }, 3000);
+        $contWrong.removeClass("hide");
+        setTimeout(function() {
+            showQuestion("Y", question);
+            $contWrong.addClass("hide");
+        }, 1000);
 
     }
 }
+
+let points = function() {
+    setInterval(function() {
+        if (timer > 0) {
+            timer--;
+            $timer.text("time: " +
+                timer);
+        } else {
+            clearInterval(points);
+        }
+    }, 1000);
+}
+
+$submitScore.on("click", saveScore($userInitials, finalScore));
+
+function saveScore(user, score) {
+    console.log(user, score)
+}
+
 
 
 
@@ -102,8 +151,8 @@ const quizQuestions = [{
 }, {
     question: "The external JavaScript file must contain <script> tag. True or False?",
     answers: {
-        A: "True",
-        B: "False",
+        A: "Right",
+        B: "Wrong",
     },
     correctAnswer: "B"
 }, {
