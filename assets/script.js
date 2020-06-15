@@ -85,7 +85,7 @@ function showQuestion(newQuestion, oldQuestion) {
 
     let quizQuestion = quizQuestions[indexQuestion];
 
-    $question.append(quizQuestion.question);
+    $question.text(quizQuestion.question);
 
 
 
@@ -235,7 +235,7 @@ const quizQuestions = [{
     },
     correctAnswer: "D"
 }, {
-    question: "The external JavaScript file must contain <script> tag. True or False?",
+    question: "The external JavaScript file must contain <script> tag. Right or Wrong?",
     answers: {
         A: "Right",
         B: "Wrong",
