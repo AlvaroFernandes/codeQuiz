@@ -35,9 +35,10 @@ if (!highScores) {
     highScores = [];
 }
 
+//amount of seconds that the user has to finish the quiz.
 let timer = 100;
-// $timer.text(timer);
 
+// Count how many wrong answers the user had.
 let wrongCount = 0;
 
 //funtion that will hide the initial screen and call the function that willl format the first question;
@@ -48,6 +49,8 @@ function startGame() {
     points();
 }
 
+
+//function that create the questions.
 function showQuestion(newQuestion, oldQuestion) {
 
     let indexQuestion = '';
@@ -109,7 +112,7 @@ function showQuestion(newQuestion, oldQuestion) {
 }
 
 
-
+//function check if the answer is right or wrong;
 function checkResult(userResponse, question) {
 
     if (question.correctAnswer === userResponse) {
@@ -129,6 +132,7 @@ function checkResult(userResponse, question) {
     }
 }
 
+//create the timer that will be the points.
 let points = function() {
     setInterval(function() {
         if (timer > 0) {
@@ -142,7 +146,7 @@ let points = function() {
 }
 
 
-
+//function to save the scores.
 function saveScore() {
     let iniUser = $userInitials.val();
 
@@ -155,6 +159,8 @@ function saveScore() {
 
 }
 
+
+//Function to create the list of scores.
 function showHighScore() {
     $listScore.removeClass("hide");
 
@@ -193,12 +199,16 @@ function showHighScore() {
 
 }
 
+
+//function to clear localStorage;
 function clearScore() {
     window.localStorage.clear();
     location.reload();
 
 }
 
+
+//function to start the quiz after finish.
 function startOver() {
     location.reload();
 }
