@@ -29,9 +29,16 @@ $startOver.on("click", startOver);
 
 let highScores = [];
 
+highScores = JSON.parse(localStorage.getItem("highScores"));
+
+if (!highScores) {
+    highScores = [];
+}
+
 let timer = 100;
 // $timer.text(timer);
 
+let wrongCount = 0;
 
 //funtion that will hide the initial screen and call the function that willl format the first question;
 function startGame() {
@@ -62,10 +69,11 @@ function showQuestion(newQuestion, oldQuestion) {
     if (newQuestion === "Y" && indexQuestion > quizQuestions.length - 1) {
         console.log("end game!");
         points(stop);
-        finalScore = timer;
+        finalScore = timer - (wrongCount * 10);
         console.log(finalScore);
         $(".top").addClass("hide");
         $(".final-scores").removeClass("hide");
+
         $(".finalScore").text(finalScore);
 
 
@@ -115,7 +123,7 @@ function checkResult(userResponse, question) {
         setTimeout(function() {
             showQuestion("Y", question);
             $contWrong.addClass("hide");
-
+            wrongCount++;
         }, 500);
 
     }
@@ -137,21 +145,29 @@ let points = function() {
 
 function saveScore() {
     let iniUser = $userInitials.val();
+
     highScores.push({ "user": iniUser, "score": finalScore });
 
+    console.log(highScores);
     localStorage.setItem("highScores", JSON.stringify(highScores));
-    showHighScore;
+    showHighScore();
 
-    location.reload();
+
 }
 
 function showHighScore() {
     $listScore.removeClass("hide");
+
     if (!$controls.hasClass("hide")) {
         $controls.addClass("hide");
     }
+
     if (!$(".top").hasClass("hide")) {
         $(".top").addClass("hide");
+    }
+
+    if (!$(".final-scores").hasClass("hide")) {
+        $(".final-scores").addClass("hide");
     }
 
     let listHighScore = JSON.parse(localStorage.getItem("highScores"));
